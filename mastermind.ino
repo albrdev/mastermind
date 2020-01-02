@@ -171,6 +171,7 @@ void resetInput(void)
     #endif
 
     lcdClear(0, 0, SECRET_LENGTH);
+    lcdClear(0, 1, SECRET_LENGTH);
     lcdClear(LCD_COLCOUNT - STRLEN(MESSAGE_NEXTTRY), 0, STRLEN(MESSAGE_NEXTTRY));
     lcd.setCursor(0, 0);
     gameData.inputCount = 0;
