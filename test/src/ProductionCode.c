@@ -4,7 +4,7 @@
 
 static inline size_t random(const size_t n)
 {
-    return (size_t)rand() % n;
+    return n > 0 ? (size_t)rand() % n : 0;
 }
 
 void shuffleSort(char* const arr, const size_t count)
