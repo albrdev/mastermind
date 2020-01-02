@@ -1,0 +1,7 @@
+# Custom
+[mM]akefile   text eol=lf
+
+*.c           text diff=c
+*.h           text diff=c
+*.cpp         text diff=cpp
+*.hpp         text diff=cpp
