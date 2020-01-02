@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <Keypad.h>
 #include <LiquidCrystal.h>
+#include <stddef.h>
 
 #define NOP         ((void)0)
 #define ARRCNT(x)   (sizeof(x) / sizeof(*(x)))
@@ -109,7 +110,7 @@ void generateSecret(const bool allowDuplicates = false)
     DebugPrint("Secret key generated: "); DebugWrite(gameData.secret, SECRET_LENGTH); DebugPrintLine("");
 }
 
-void lcdPrint(const int x, const int y, const char* const arr, const size_t n)
+void lcdPrint(const uint8_t x, const uint8_t y, const char* const arr, const size_t n)
 {
     if((x < 0 || x >= LCD_COLCOUNT) || (y < 0 || y >= LCD_ROWCOUNT))
     {
@@ -125,7 +126,7 @@ void lcdPrint(const int x, const int y, const char* const arr, const size_t n)
 
 void lcdPrintTries(void)
 {
-    int x = LCD_COLCOUNT - numberLength(gameData.tries);
+    uint8_t x = LCD_COLCOUNT - numberLength(gameData.tries);
     if(x < 0)
     {
         return;
@@ -135,7 +136,7 @@ void lcdPrintTries(void)
     lcd.print(gameData.tries);
 }
 
-void lcdClear(const int x, const int y, const size_t n)
+void lcdClear(const uint8_t x, const uint8_t y, const size_t n)
 {
     if((x < 0 || x >= LCD_COLCOUNT) || (y < 0 || y >= LCD_ROWCOUNT))
     {
