@@ -77,6 +77,11 @@ inline unsigned int numberLength(const unsigned int n)
     return (n > 0 ? (unsigned int)log10((double)n) : 0) + 1;
 }
 
+inline size_t randomNumber(const size_t n)
+{
+    return n > 0 ? random(n) : 0;
+}
+
 void shuffleSort(char* const list, const size_t n)
 {
     size_t i;
@@ -84,7 +89,7 @@ void shuffleSort(char* const list, const size_t n)
     // Iterate backwards, swapping last element of each iteration with a random element of lower index
     for(i = n; i-- > 0;)
     {
-        size_t z = random(i) + 1;
+        size_t z = randomNumber(i) + 1;
         char tmp = list[i];
         list[i] = list[z];
         list[z] = tmp;
