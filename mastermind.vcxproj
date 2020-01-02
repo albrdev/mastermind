@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>16.0</VCProjectVersion>
+    <ProjectGuid>{06D95E48-4798-4CED-86C9-553053E35AF6}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Makefile</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <NMakeBuildCommandLine>platformio -f -c visualstudio run</NMakeBuildCommandLine>
+    <NMakeOutput>mastermind.exe</NMakeOutput>
+    <NMakeCleanCommandLine>platformio -f -c visualstudio run --target clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>PLATFORMIO=40003;ARDUINO_AVR_UNO;F_CPU=16000000L;ARDUINO_ARCH_AVR;ARDUINO=10805;__AVR_ATmega328P__;WIN32;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(ProjectDir)/include;$(ProjectDir)/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/cores/arduino;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/variants/standard;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/avr/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include-fixed;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/tool-unity;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+    <IncludePath>$(ProjectDir)\.pio\libdeps\uno\Keypad_ID165\src;$(ProjectDir)\.pio\libdeps\uno\LiquidCrystal_ID887\src;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <NMakeBuildCommandLine>platformio -f -c visualstudio run</NMakeBuildCommandLine>
+    <NMakeOutput>mastermind.exe</NMakeOutput>
+    <NMakeCleanCommandLine>platformio -f -c visualstudio run --target clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>PLATFORMIO=40003;ARDUINO_AVR_UNO;F_CPU=16000000L;ARDUINO_ARCH_AVR;ARDUINO=10805;__AVR_ATmega328P__;_DEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(HOMEDRIVE)$(HOMEPATH)/Desktop/a/include;$(HOMEDRIVE)$(HOMEPATH)/Desktop/a/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/cores/arduino;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/variants/standard;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/avr/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include-fixed;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/tool-unity;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <NMakeBuildCommandLine>platformio -f -c visualstudio run</NMakeBuildCommandLine>
+    <NMakeOutput>mastermind.exe</NMakeOutput>
+    <NMakeCleanCommandLine>platformio -f -c visualstudio run --target clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>PLATFORMIO=40003;ARDUINO_AVR_UNO;F_CPU=16000000L;ARDUINO_ARCH_AVR;ARDUINO=10805;__AVR_ATmega328P__;WIN32;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(HOMEDRIVE)$(HOMEPATH)/Desktop/a/include;$(HOMEDRIVE)$(HOMEPATH)/Desktop/a/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/cores/arduino;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/variants/standard;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/avr/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include-fixed;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/tool-unity;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <NMakeBuildCommandLine>platformio -f -c visualstudio run</NMakeBuildCommandLine>
+    <NMakeOutput>mastermind.exe</NMakeOutput>
+    <NMakeCleanCommandLine>platformio -f -c visualstudio run --target clean</NMakeCleanCommandLine>
+    <NMakePreprocessorDefinitions>PLATFORMIO=40003;ARDUINO_AVR_UNO;F_CPU=16000000L;ARDUINO_ARCH_AVR;ARDUINO=10805;__AVR_ATmega328P__;NDEBUG;$(NMakePreprocessorDefinitions)</NMakePreprocessorDefinitions>
+    <NMakeIncludeSearchPath>$(HOMEDRIVE)$(HOMEPATH)/Desktop/a/include;$(HOMEDRIVE)$(HOMEPATH)/Desktop/a/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/cores/arduino;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/variants/standard;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/EEPROM/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/HID/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SPI/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/SoftwareSerial/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/framework-arduinoavr/libraries/__cores__/arduino/Wire/src;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/avr/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/toolchain-atmelavr/lib/gcc/avr/5.4.0/include-fixed;$(HOMEDRIVE)$(HOMEPATH)/.platformio/packages/tool-unity;$(NMakeIncludeSearchPath)</NMakeIncludeSearchPath>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include=".gitattributes" />
+    <None Include=".gitignore" />
+    <None Include="Makefile" />
+    <None Include="mastermind.ino" />
+    <None Include="platformio.ini" />
+    <None Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="LICENSE.txt" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>
