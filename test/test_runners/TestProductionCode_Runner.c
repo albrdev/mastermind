@@ -3,5 +3,5 @@
 
 TEST_GROUP_RUNNER(ProductionCode)
 {
-  RUN_TEST_CASE(ProductionCode, ShuffleSort);
+    RUN_TEST_CASE(ProductionCode, ShuffleSort);
 }
