@@ -1,0 +1,8 @@
+# Custom
+.gitignore      text eol=lf
+.gitattributes  text eol=lf
+
+*.[mM][dD]      text eol=lf
+*.[tT][xX][tT]  text eol=lf
+
+*.ino           text diff=cpp
