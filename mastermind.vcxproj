@@ -96,6 +96,7 @@
   <ItemGroup>
     <None Include=".gitattributes" />
     <None Include=".gitignore" />
+    <None Include=".gitmodules" />
     <None Include="Makefile" />
     <None Include="mastermind.ino" />
     <None Include="platformio.ini" />

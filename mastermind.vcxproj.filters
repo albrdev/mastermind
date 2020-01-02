@@ -21,6 +21,7 @@
     <None Include="platformio.ini" />
     <None Include="README.md" />
     <None Include="Makefile" />
+    <None Include=".gitmodules" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="LICENSE.txt" />
