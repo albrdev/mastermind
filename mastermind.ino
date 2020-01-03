@@ -148,7 +148,7 @@ void shuffleSort(char* const arr, const size_t n)
     {
         size_t z = randomNumber(i) + 1;
         char tmp = arr[i];
-        arr[i] = list[z];
+        arr[i] = arr[z];
         arr[z] = tmp;
     }
 }
@@ -291,24 +291,30 @@ void newGame(void)
     resetInput();
 }
 
-void checkInput(const char* const input, const char* const secret, char* const hints, const size_t n)
+/*! checkInput()
+    Checks player input and polulates 'gameData.hints' with correct/misplaced/wrong guesses.
+    \fn checkInput()
+    \param  N/A.
+    \return .
+*/
+void checkInput(void)
 {
-    memset(hints, HINT_WRONG, sizeof(*hints) * n);
+    memset(gameData.hints, HINT_WRONG, sizeof(*gameData.hints) * SECRET_LENGTH);
 
-    for(size_t i = 0; i < n; i++)
+    for(size_t i = 0; i < SECRET_LENGTH; i++)
     {
-        for(size_t j = 0; j < n; j++)
+        for(size_t j = 0; j < SECRET_LENGTH; j++)
         {
-            if(input[i] == secret[j])
+            if(gameData.input[i] == gameData.secret[j])
             {
                 if(i == j)
                 {
-                    hints[i] = HINT_CORRECT;
+                    gameData.hints[i] = HINT_CORRECT;
                     break;
                 }
                 else
                 {
-                    hints[i] = HINT_MISPLACED;
+                    gameData.hints[i] = HINT_MISPLACED;
                 }
             }
         }
@@ -363,7 +369,7 @@ void loop(void)
             gameData.tries++;
             lcdPrintTries();
 
-            checkInput(gameData.input, gameData.secret, gameData.hints, SECRET_LENGTH);
+            checkInput();
             lcdPrint(0, 1, gameData.hints, SECRET_LENGTH);
             DebugPrint("Input: "); DebugWrite(gameData.input, SECRET_LENGTH); DebugPrintLine("");
             DebugPrint("Hints: "); DebugWrite(gameData.hints, SECRET_LENGTH); DebugPrintLine("");
