@@ -321,11 +321,17 @@ void checkInput(void)
     }
 }
 
-bool isSolved(const char* const hints, const size_t n)
+/*! isSolved()
+    Checking 'gameData.hints' if all hints are correctly guessed (i.e. player has solved the secret number).
+    \fn isSolved()
+    \param  N/A.
+    \return True if the entire number guessed is correct, false otherwise.
+*/
+bool isSolved()
 {
-    for(size_t i = 0; i < n; i++)
+    for(size_t i = 0; i < SECRET_LENGTH; i++)
     {
-        if(hints[i] != HINT_CORRECT)
+        if(gameData.hints[i] != HINT_CORRECT)
         {
             return false;
         }
@@ -334,6 +340,12 @@ bool isSolved(const char* const hints, const size_t n)
     return true;
 }
 
+/*! setup()
+    Arduino setup function. Initialized game/component instances. Called automatically internally.
+    \fn setup()
+    \param  N/A.
+    \return .
+*/
 void setup(void)
 {
     Serial.begin(9600);
@@ -348,6 +360,12 @@ void setup(void)
     newGame();                            // Initialize game variables and LCD cursor
 }
 
+/*! loop()
+    Arduino main loop function. Game logic is running from here. Called automatically internally.
+    \fn loop()
+    \param  N/A.
+    \return .
+*/
 void loop(void)
 {
     char key = keypad.getKey();
@@ -374,7 +392,7 @@ void loop(void)
             DebugPrint("Input: "); DebugWrite(gameData.input, SECRET_LENGTH); DebugPrintLine("");
             DebugPrint("Hints: "); DebugWrite(gameData.hints, SECRET_LENGTH); DebugPrintLine("");
 
-            if(isSolved(gameData.hints, SECRET_LENGTH))
+            if(isSolved())
             {
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_WIN), 0);
                 lcd.print(MESSAGE_WIN);
