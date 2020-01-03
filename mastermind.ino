@@ -321,7 +321,7 @@ void checkInput(void)
     }
 }
 
-bool isSecretSolved(const char* const hints, const size_t n)
+bool isSolved(const char* const hints, const size_t n)
 {
     for(size_t i = 0; i < n; i++)
     {
@@ -374,7 +374,7 @@ void loop(void)
             DebugPrint("Input: "); DebugWrite(gameData.input, SECRET_LENGTH); DebugPrintLine("");
             DebugPrint("Hints: "); DebugWrite(gameData.hints, SECRET_LENGTH); DebugPrintLine("");
 
-            if(isSecretSolved(gameData.hints, SECRET_LENGTH))
+            if(isSolved(gameData.hints, SECRET_LENGTH))
             {
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_WIN), 0);
                 lcd.print(MESSAGE_WIN);
