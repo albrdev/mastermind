@@ -161,15 +161,18 @@ void shuffleSort(char* const arr, const size_t n)
 */
 void generateSecret(const bool allowDuplicates = false)
 {
+    // Check if we allow duplicate digits.
     if(allowDuplicates)
     {
         for(size_t i = 0; i < SECRET_LENGTH; i++)
         {
+            // Just use the random function to generate a number from 0 to 'DIGIT_COUNT' - 1 (i.e. 0 - 9). Then add it to the character '0' to generate a character between '0' and '9'.
             gameData.secret[i] = '0' + random(DIGIT_COUNT);
         }
     }
     else
     {
+        // If we don't allow duplicate digits, then shuffle an array containing unique numbers and just pick the first 'SECRET_LENGTH' number of characters.
         shuffleSort(randomDigitPool, DIGIT_COUNT);
         for(size_t i = 0; i < SECRET_LENGTH; i++)
         {
@@ -191,11 +194,13 @@ void generateSecret(const bool allowDuplicates = false)
 */
 void lcdPrint(const uint8_t x, const uint8_t y, const char* const arr, const size_t n)
 {
+    // Boundary check.
     if((x < 0 || x >= LCD_COLCOUNT) || (y < 0 || y >= LCD_ROWCOUNT))
     {
         return;
     }
 
+    // Set LCD cursor position and print buffer content.
     lcd.setCursor(x, y);
     for(size_t i = 0; i < n; i++)
     {
@@ -211,12 +216,14 @@ void lcdPrint(const uint8_t x, const uint8_t y, const char* const arr, const siz
 */
 void lcdPrintTries(void)
 {
+    // Calculate position and check boundary.
     uint8_t x = LCD_COLCOUNT - numberLength(gameData.tries);
     if(x < 0)
     {
         return;
     }
 
+    // Set LCD cursor position and print the number.
     lcd.setCursor(x, 1);
     lcd.print(gameData.tries);
 }
@@ -231,11 +238,13 @@ void lcdPrintTries(void)
 */
 void lcdClear(const uint8_t x, const uint8_t y, const size_t n)
 {
+    // Boundary check.
     if((x < 0 || x >= LCD_COLCOUNT) || (y < 0 || y >= LCD_ROWCOUNT))
     {
         return;
     }
 
+    // Set LCD cursor position and clear characters (print spaces).
     lcd.setCursor(x, y);
     for(size_t i = 0; i < n; i++)
     {
@@ -262,9 +271,12 @@ void resetInput(void)
     }
     #endif
 
+    // Partially clear LCD.
     lcdClear(0, 0, SECRET_LENGTH);
     lcdClear(0, 1, SECRET_LENGTH);
     lcdClear(LCD_COLCOUNT - STRLEN(MESSAGE_NEXTTRY), 0, STRLEN(MESSAGE_NEXTTRY));
+
+    // Reset LCD cursor, input count and state.
     lcd.setCursor(0, 0);
     gameData.inputCount = 0;
     gameData.state = GS_INPUT;
@@ -281,13 +293,17 @@ void newGame(void)
     DebugPrintLine("");
     DebugPrint("New game"); DebugPrintLine("");
 
+    // Clear entire LCD.
     lcd.clear();
 
+    // Generate a new secret number.
     generateSecret(false);
 
+    // Reset tries count and display 0.
     gameData.tries = 0;
     lcdPrintTries();
 
+    // Also reset input as it is also a new round.
     resetInput();
 }
 
@@ -299,21 +315,28 @@ void newGame(void)
 */
 void checkInput(void)
 {
+    // Reset hints to 'HINT_WRONG'.
     memset(gameData.hints, HINT_WRONG, sizeof(*gameData.hints) * SECRET_LENGTH);
 
+    // Loop player input.
     for(size_t i = 0; i < SECRET_LENGTH; i++)
     {
+        // For every input character loop the secret number.
         for(size_t j = 0; j < SECRET_LENGTH; j++)
         {
+            // Player has guessed right number.
             if(gameData.input[i] == gameData.secret[j])
             {
                 if(i == j)
                 {
+                    // Player has also guessed the correct position of the number.
                     gameData.hints[i] = HINT_CORRECT;
+                    // We don't want to check further because player has made the best guess and we dont want to 'overwrite' it with 'HINT_MISPLACED' in any next loops.
                     break;
                 }
                 else
                 {
+                    // Correct number, but in wrong position. Continue loop to check the if this number is also guessed in another position (perhaps with a 'HINT_CORRECT' guess).
                     gameData.hints[i] = HINT_MISPLACED;
                 }
             }
@@ -327,8 +350,9 @@ void checkInput(void)
     \param  N/A.
     \return True if the entire number guessed is correct, false otherwise.
 */
-bool isSolved()
+bool isSolved(void)
 {
+    // Loop and check if all character are of type 'HINT_CORRECT'.
     for(size_t i = 0; i < SECRET_LENGTH; i++)
     {
         if(gameData.hints[i] != HINT_CORRECT)
@@ -348,16 +372,20 @@ bool isSolved()
 */
 void setup(void)
 {
+    // Initialize 'Serial'
     Serial.begin(9600);
     Serial.println("Initializing...");
 
-    randomSeed(analogRead(A0));             // Get seed from an unconnected analog port
-    lcd.begin(LCD_COLCOUNT, LCD_ROWCOUNT);  // Initialize LCD
+    // Get seed from an unconnected analog port
+    randomSeed(analogRead(A0));
+    // Initialize LCD
+    lcd.begin(LCD_COLCOUNT, LCD_ROWCOUNT);
 
     Serial.println("Done.");
     Serial.flush();
 
-    newGame();                            // Initialize game variables and LCD cursor
+    // Initialize game variables and LCD cursor
+    newGame();
 }
 
 /*! loop()
@@ -368,6 +396,7 @@ void setup(void)
 */
 void loop(void)
 {
+    // Get player input.
     char key = keypad.getKey();
     if(key == NO_KEY)
     {
@@ -376,24 +405,30 @@ void loop(void)
 
     DebugPrint("Key: "); DebugPrint(key); DebugPrintLine("");
 
+    // If player is in input state and has typed in a digit.
     if(gameData.state == GS_INPUT && (key >= '0' && key <= '9'))
     {
         gameData.input[gameData.inputCount] = key;
         gameData.inputCount++;
         lcd.print(key);
 
+        // If player has types in maximum digit guesses.
         if(gameData.inputCount >= SECRET_LENGTH)
         {
+            // Another try has been made.
             gameData.tries++;
             lcdPrintTries();
 
+            // Check player input to populate and print 'gameData.hints'.
             checkInput();
             lcdPrint(0, 1, gameData.hints, SECRET_LENGTH);
             DebugPrint("Input: "); DebugWrite(gameData.input, SECRET_LENGTH); DebugPrintLine("");
             DebugPrint("Hints: "); DebugWrite(gameData.hints, SECRET_LENGTH); DebugPrintLine("");
 
+            // If player has solved the entire secret number.
             if(isSolved())
             {
+                // Display win message.
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_WIN), 0);
                 lcd.print(MESSAGE_WIN);
                 gameData.state = GS_GAMEOVER;
@@ -402,6 +437,7 @@ void loop(void)
             }
             else if(gameData.tries >= TRIES_MAX)
             {
+                // Display lose message.
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_LOSE), 0);
                 lcd.print(MESSAGE_LOSE);
                 gameData.state = GS_GAMEOVER;
@@ -410,6 +446,7 @@ void loop(void)
             }
             else
             {
+                // Round over. Player can guess again.
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_NEXTTRY), 0);
                 lcd.print(MESSAGE_NEXTTRY);
 
@@ -417,17 +454,21 @@ void loop(void)
             }
         }
     }
+    // If button for new round was pressed.
     else if(key == BUTTON_NEWROUND)
     {
+        // Intitiate new round/reset input.
         if(gameData.state == GS_INPUT || gameData.state == GS_ROUNDOVER)
         {
             resetInput();
         }
+        // If game is over, initiate a new game instead (for conveniency).
         else if(gameData.state == GS_GAMEOVER)
         {
             newGame();
         }
     }
+    // If button for new game was pressed, initiate a new game.
     else if(key == BUTTON_NEWGAME)
     {
         newGame();
