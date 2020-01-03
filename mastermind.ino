@@ -1,3 +1,10 @@
+/*! mastermind.ino
+    Mastermind - Simple memory game
+    \file   mastermind.ino
+    \author albrdev (albrdev@gmail.com)
+    \date   2019-12-28
+*/
+
 #include <Arduino.h>
 #include <Keypad.h>
 #include <LiquidCrystal.h>
@@ -106,7 +113,7 @@ struct
 
     size_t inputCount;          /*!< The number of characters currently typed in by the player. This is tied to the struct member 'input'. */
     unsigned int tries;         /*!< The current number of tries the player has made. */
-} gameData;
+} gameData;                     /*!< Anonymous struct containing game data. */
 
 #define DIGIT_COUNT  10                                                                     /*!< Number of digits the secret number is containing/the player can use to solve the secret combination with. */
 char randomDigitPool[DIGIT_COUNT] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };   /*!< Pool with digits to be uniquely randomized. */
