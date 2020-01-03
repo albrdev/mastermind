@@ -3,15 +3,54 @@
 #include <LiquidCrystal.h>
 #include <stddef.h>
 
+/*! NOP
+    Defines 'no operation'.
+    \def NOP
+*/
 #define NOP         ((void)0)
+
+/*! ARRCNT()
+    Calculates number of elements on a compile-time (statically allocated) array. This is calculated on compile-time and thus saves a small amount of runtime performance.
+    \def ARRCNT()
+    \param[in]  x   The array of which the count is to be calculated
+    \return         The numbers of elements in the array
+*/
 #define ARRCNT(x)   (sizeof(x) / sizeof(*(x)))
+
+/*! STRLEN()
+    Compile-time version of strlen(). Should only be called on compile-time C-string constants.
+    \def STRLEN()
+    \param[in]  x   The string of which the length is to be calculated
+    \return         The numbers of characters in the array (excluding the null termination character).
+*/
 #define STRLEN(x)   (ARRCNT(x) - 1)
 
 #define DEBUG   // Uncomment for debug mode
 
 #ifdef DEBUG
+/*! DebugWrite()
+    Debug mode version of Seria.write(). If 'DEBUG' is defined, this macro will call Serial.write() with the parameters supplied, otherwise no operation will occur.
+    \def DebugWrite()
+    \param[in]  x   The same as first parameter of Serial.write().
+    \param[in]  n   The same as second parameter of Serial.write().
+    \return         The same as Seria.write().
+*/
 #define DebugWrite(x, n)    Serial.write(x, n)
+
+/*! DebugPrint()
+    Debug mode version of Seria.print(). If 'DEBUG' is defined, this macro will call Serial.print() with the parameter(s) supplied, otherwise no operation will occur.
+    \def DebugPrint()
+    \param[in]  x   The same as first parameter(s) of Serial.print().
+    \return         The same as Seria.print().
+*/
 #define DebugPrint(x)       Serial.print(x)
+
+/*! DebugPrintLine()
+    Debug mode version of Seria.println(). If 'DEBUG' is defined, this macro will call Serial.println() with the parameter(s) supplied, otherwise no operation will occur.
+    \def DebugPrintLine()
+    \param[in]  x   The same as first parameter(s) of Serial.println().
+    \return         The same as Seria.println().
+*/
 #define DebugPrintLine(x)   Serial.println(x)
 #else
 #define DebugWrite(x, n)    NOP
@@ -19,11 +58,11 @@
 #define DebugPrintLine(x)   NOP
 #endif
 
-#define KEYPAD_ROWCOUNT     4
-#define KEYPAD_COLCOUNT     4
-#define BUTTON_NEWROUND     '*'
-#define BUTTON_NEWGAME      '#'
-const byte KEYPAD_KEYMAP[KEYPAD_ROWCOUNT][KEYPAD_COLCOUNT] =
+#define KEYPAD_ROWCOUNT     4                                   /*!< The number of keypad rows. */
+#define KEYPAD_COLCOUNT     4                                   /*!< The number of keypad columns. */
+#define BUTTON_NEWROUND     '*'                                 /*!< Character tied to the keypad button resetting round/input. */
+#define BUTTON_NEWGAME      '#'                                 /*!< Character tied to the keypad button resetting the game. */
+const byte KEYPAD_KEYMAP[KEYPAD_ROWCOUNT][KEYPAD_COLCOUNT] =    /*!< Keypad keymap with characters tied to all the keypad buttons. Last column is not yet i use. */
 {
     {'1',               '2',    '3',            'A'},
     {'4',               '5',    '6',            'B'},
@@ -31,58 +70,76 @@ const byte KEYPAD_KEYMAP[KEYPAD_ROWCOUNT][KEYPAD_COLCOUNT] =
     {BUTTON_NEWROUND,   '0',    BUTTON_NEWGAME, 'D'}
 };
 
-byte ROW_PINS[KEYPAD_ROWCOUNT] = { 7, 6, 5, 4 };
-byte COL_PINS[KEYPAD_COLCOUNT] = { 3, 2, A4, A5 };
-Keypad keypad(makeKeymap(KEYPAD_KEYMAP), ROW_PINS, COL_PINS, KEYPAD_ROWCOUNT, KEYPAD_COLCOUNT);
+byte ROW_PINS[KEYPAD_ROWCOUNT] = { 7, 6, 5, 4 };                                                /*!< Pin numbers mapped to keypad rows. */
+byte COL_PINS[KEYPAD_COLCOUNT] = { 3, 2, A4, A5 };                                              /*!< Pin numbers mapped to keypad columns. */
+Keypad keypad(makeKeymap(KEYPAD_KEYMAP), ROW_PINS, COL_PINS, KEYPAD_ROWCOUNT, KEYPAD_COLCOUNT); /*!< Keypad instance. */
 
-#define LCD_ROWCOUNT    2
-#define LCD_COLCOUNT    16
-LiquidCrystal lcd(13, 12, 11, 10, 9, 8);
+#define LCD_ROWCOUNT    2                   /*!< The number of LCD rows. */
+#define LCD_COLCOUNT    16                  /*!< The number of LCD columns. */
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8);    /*!< LCD instance. */
 
-#define SECRET_LENGTH   4
-#define HINT_WRONG      '-'
-#define HINT_MISPLACED  '?'
-#define HINT_CORRECT    '!'
+#define SECRET_LENGTH   4   /*!< The length of the secret number combination a player should solve. */
+#define HINT_WRONG      '-' /*!< The 'wrong' hint character. Displayed on the LCD when a guessed number is wrong. */
+#define HINT_MISPLACED  '?' /*!< The 'misplaced' hint character. Displayed on the LCD when a guessed number is correct but in the wrong place. */
+#define HINT_CORRECT    '!' /*!< The 'correct' hint character. Displayed on the LCD when a guessed number is correct and in the right place. */
 
-#define TRIES_MAX       12
+#define TRIES_MAX       12  /*!< The maximum number of tries before player loses. */
 
-#define MESSAGE_WIN     "Winner"
-#define MESSAGE_LOSE    "Loser"
-#define MESSAGE_NEXTTRY "Try again"
+#define MESSAGE_WIN     "Winner"    /*!< The text displayed when a player wins a game. */
+#define MESSAGE_LOSE    "Loser"     /*!< The text displayed when a player loses a game. */
+#define MESSAGE_NEXTTRY "Try again" /*!< The text displayed when a player guessed wrong but still have guesses left. */
 
 typedef enum
 {
-    GS_INPUT,
-    GS_ROUNDOVER,
-    GS_GAMEOVER
+    GS_INPUT,       /*!< Game awaits input from player. */
+    GS_ROUNDOVER,   /*!< Player has made a guess and game awaits a new round to be initialized (button press). */
+    GS_GAMEOVER     /*!< Game is over, player may have won or lost. Game awaits a new game to be initialized (button press). */
 } gamestate;
 
 struct
 {
-    gamestate state;
+    gamestate state;            /*!< The current state of the game. */
 
-    char secret[SECRET_LENGTH];
-    char input[SECRET_LENGTH];
-    char hints[SECRET_LENGTH];
+    char secret[SECRET_LENGTH]; /*!< Buffer containing the secret number. */
+    char input[SECRET_LENGTH];  /*!< Buffer containing the current guessed number. */
+    char hints[SECRET_LENGTH];  /*!< Buffer containing the hints of current guessed number. */
 
-    size_t inputCount;
-    unsigned int tries;
+    size_t inputCount;          /*!< The number of characters currently typed in by the player. This is tied to the struct member 'input'. */
+    unsigned int tries;         /*!< The current number of tries the player has made. */
 } gameData;
 
-#define DIGIT_COUNT  10
-char randomDigitPool[DIGIT_COUNT] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };
+#define DIGIT_COUNT  10                                                                     /*!< Number of digits the secret number is containing/the player can use to solve the secret combination with. */
+char randomDigitPool[DIGIT_COUNT] = { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' };   /*!< Pool with digits to be uniquely randomized. */
 
+/*! numberLength()
+    Calculates the number of digits contained in the number (base 10).
+    \fn numberLength()
+    \param[in]  n   The number which length is to be calculated.
+    \return         The length of the number.
+*/
 inline unsigned int numberLength(const unsigned int n)
 {
     return (n > 0 ? (unsigned int)log10((double)n) : 0) + 1;
 }
 
+/*! randomNumber()
+    Returns a random number from 0 to n - 1.
+    \fn randomNumber()
+    \param[in]  n   Maximum number to be randomized (exclusive). If this number is 0, then 0 will be returned, preventing a possible division by zero.
+    \return         A random number between 0 and n - 1.
+*/
 inline size_t randomNumber(const size_t n)
 {
     return n > 0 ? random(n) : 0;
 }
 
-void shuffleSort(char* const list, const size_t n)
+/*! shuffleSort()
+    Shuffles an array of characters. A call to 'randomSeed()' should be called beforehand.
+    \fn shuffleSort()
+    \param[in,out]  arr The array to be shuffled.
+    \return             .
+*/
+void shuffleSort(char* const arr, const size_t n)
 {
     size_t i;
 
@@ -90,12 +147,18 @@ void shuffleSort(char* const list, const size_t n)
     for(i = n; i-- > 0;)
     {
         size_t z = randomNumber(i) + 1;
-        char tmp = list[i];
-        list[i] = list[z];
-        list[z] = tmp;
+        char tmp = arr[i];
+        arr[i] = list[z];
+        arr[z] = tmp;
     }
 }
 
+/*! generateSecret()
+    Generates a secret number for the player to be solved. Result is stored in 'gameData.secret' buffer.
+    \fn generateSecret()
+    \param[in]  allowDuplicates Allows duplicate digits or not.
+    \return                     .
+*/
 void generateSecret(const bool allowDuplicates = false)
 {
     if(allowDuplicates)
@@ -117,6 +180,15 @@ void generateSecret(const bool allowDuplicates = false)
     DebugPrint("Secret key generated: "); DebugWrite(gameData.secret, SECRET_LENGTH); DebugPrintLine("");
 }
 
+/*! lcdPrint()
+    Prints text on the LCD at the specified coordinates.
+    \fn lcdPrint()
+    \param[in]  x   The x-coordinate of the LCD.
+    \param[in]  y   The y-coordinate of the LCD.
+    \param[in]  arr A buffer contianing characters to print.
+    \param[in]  n   The number of characters to print.
+    \return         .
+*/
 void lcdPrint(const uint8_t x, const uint8_t y, const char* const arr, const size_t n)
 {
     if((x < 0 || x >= LCD_COLCOUNT) || (y < 0 || y >= LCD_ROWCOUNT))
@@ -131,6 +203,12 @@ void lcdPrint(const uint8_t x, const uint8_t y, const char* const arr, const siz
     }
 }
 
+/*! lcdPrintTries()
+    Prints number of player tries on the LCD's lower right corner. The length of the number is calculated automatically.
+    \fn lcdPrintTries()
+    \param  N/A.
+    \return .
+*/
 void lcdPrintTries(void)
 {
     uint8_t x = LCD_COLCOUNT - numberLength(gameData.tries);
@@ -143,6 +221,14 @@ void lcdPrintTries(void)
     lcd.print(gameData.tries);
 }
 
+/*! lcdClear()
+    Clears characters on the LCD at the specified coordinates.
+    \fn lcdClear()
+    \param[in]  x   The x-coordinate of the LCD.
+    \param[in]  y   The y-coordinate of the LCD.
+    \param[in]  n   The number of characters to clear.
+    \return         .
+*/
 void lcdClear(const uint8_t x, const uint8_t y, const size_t n)
 {
     if((x < 0 || x >= LCD_COLCOUNT) || (y < 0 || y >= LCD_ROWCOUNT))
@@ -157,6 +243,12 @@ void lcdClear(const uint8_t x, const uint8_t y, const size_t n)
     }
 }
 
+/*! resetInput()
+    Resets player input and LCD (i.e. starts a new round).
+    \fn resetInput()
+    \param  N/A.
+    \return .
+*/
 void resetInput(void)
 {
     #ifdef DEBUG
@@ -178,6 +270,12 @@ void resetInput(void)
     gameData.state = GS_INPUT;
 }
 
+/*! newGame()
+    Resets player input, LCD and game variabes (i.e. starts a new game).
+    \fn newGame()
+    \param  N/A.
+    \return .
+*/
 void newGame(void)
 {
     DebugPrintLine("");
