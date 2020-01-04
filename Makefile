@@ -1,4 +1,6 @@
-CC	:= pio
+CC			:= pio
+
+DIR_TEST	:= test
 
 .PHONY: all
 all:
@@ -7,6 +9,10 @@ all:
 .PHONY: dry
 dry:
 	$(CC) run
+
+.PHONY: test
+test:
+	$(MAKE) -C $(DIR_TEST)
 
 .PHONY: clean
 clean: clean
