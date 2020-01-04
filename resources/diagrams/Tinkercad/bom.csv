@@ -3,3 +3,6 @@ Name,Quantity,Component
 "U2",1," LCD 16 x 2 "
 "R1",1,"220 Ω Resistor"
 "KEYPAD1",1," Keypad 4x4"
+"D1",1,"Green LED"
+"D2",1,"Red LED"
+"R2, R3",2,"1 kΩ Resistor"

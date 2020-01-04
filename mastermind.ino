@@ -85,6 +85,9 @@ Keypad keypad(makeKeymap(KEYPAD_KEYMAP), ROW_PINS, COL_PINS, KEYPAD_ROWCOUNT, KE
 #define LCD_COLCOUNT    16                  /*!< The number of LCD columns. */
 LiquidCrystal lcd(13, 12, 11, 10, 9, 8);    /*!< LCD instance. */
 
+#define LEDPIN_WIN  A2
+#define LEDPIN_LOSE A3
+
 #define SECRET_LENGTH   4   /*!< The length of the secret number combination a player should solve. */
 #define HINT_WRONG      '-' /*!< The 'wrong' hint character. Displayed on the LCD when a guessed number is wrong. */
 #define HINT_MISPLACED  '?' /*!< The 'misplaced' hint character. Displayed on the LCD when a guessed number is correct but in the wrong place. */
@@ -310,6 +313,9 @@ void newGame(void)
     gameData.tries = 0;
     lcdPrintTries();
 
+    digitalWrite(LEDPIN_WIN, LOW);
+    digitalWrite(LEDPIN_LOSE, LOW);
+
     // Also reset input as it is also a new round.
     resetInput();
 }
@@ -388,6 +394,9 @@ void setup(void)
     // Initialize LCD
     lcd.begin(LCD_COLCOUNT, LCD_ROWCOUNT);
 
+    pinMode(LEDPIN_WIN, OUTPUT);
+    pinMode(LEDPIN_LOSE, OUTPUT);
+
     Serial.println("Done.");
     Serial.flush();
 
@@ -438,6 +447,7 @@ void loop(void)
                 // Display win message.
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_WIN), 0);
                 lcd.print(MESSAGE_WIN);
+                digitalWrite(LEDPIN_WIN, HIGH);
                 gameData.state = GS_GAMEOVER;
 
                 DebugPrint("Player has won"); DebugPrintLine("");
@@ -447,6 +457,7 @@ void loop(void)
                 // Display lose message.
                 lcd.setCursor(LCD_COLCOUNT - STRLEN(MESSAGE_LOSE), 0);
                 lcd.print(MESSAGE_LOSE);
+                digitalWrite(LEDPIN_LOSE, HIGH);
                 gameData.state = GS_GAMEOVER;
 
                 DebugPrint("Player has lost"); DebugPrintLine("");
