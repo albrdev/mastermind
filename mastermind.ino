@@ -163,10 +163,10 @@ void shuffleSort(char* const arr, const size_t n)
 /*! generateSecret()
     Generates a secret number for the player to be solved. Result is stored in 'gameData.secret' buffer.
     \fn generateSecret()
-    \param[in]  allowDuplicates Allows duplicate digits or not.
+    \param[in]  allowDuplicates Allow duplicate digits or not.
     \return                     .
 */
-void generateSecret(const bool allowDuplicates = false)
+void generateSecret(const bool allowDuplicates)
 {
     // Check if we allow duplicate digits.
     if(allowDuplicates)
